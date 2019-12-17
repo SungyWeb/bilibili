@@ -10,8 +10,17 @@
 
 #### 模块化的使用和编译环境
 1. 模块化基本语法
+    - import/export 注意有无default
 2. 开发环境配置
+    - webpack 功能强大
+    - babel 编译es+ 为es5语法
+    - rollup 功能单一 模块化打包工具 vue/react中都有使用
 3. 关于js众多模块化标准
+    - 没有模块化
+    - AMD成为标准， require.js（CMD）
+    - es6想要一统江湖
+    - es6标准nodejs积极实现
+    - 现代浏览器支持部分es6语法
 
 #### class和js构造函数的区别
 #### promise的使用
