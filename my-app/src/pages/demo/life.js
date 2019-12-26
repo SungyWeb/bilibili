@@ -1,4 +1,5 @@
 import React from 'react';
+import './life.less';
 
 export default class Life extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class Life extends React.Component {
   render() {
     return (
       <div>
-        <h1>hello world!</h1>
+        <h1 className="color">hello world!</h1>
         <h3>{this.state.msg}</h3>
         <button onClick={this.handleClick1.bind(this)}>click1</button>
         <button onClick={this.handleClick2}>click2</button>
