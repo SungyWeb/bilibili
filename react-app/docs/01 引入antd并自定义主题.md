@@ -4,11 +4,11 @@
 
 1. 暴露webpack.config.js
 
-`yarn eject`
+	`yarn eject`
 
 2. 安装所需依赖
 
-`yarn add antd less less-loader babel-plugin-import`
+	`yarn add antd less less-loader babel-plugin-import`
 
 3. 打开webpack.config.js
 	- 添加代码`["import", {"libraryName": "antd", "libraryDirectory": "lib", "style": true}],`， 如图
