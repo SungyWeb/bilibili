@@ -401,6 +401,15 @@
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/plugin-syntax-decorators" "^7.7.4"
 
+"@babel/plugin-proposal-decorators@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-decorators/-/plugin-proposal-decorators-7.8.0.tgz#2f1661712c557de8bc65c0b58876a2b47ff886d5"
+  integrity sha512-HKltBhhrRigrHYkDrO/9rg+ZerXSAtZjepm8URUrNxgzTzEfuOb06fUU311chMkahZHSfASNUxWVwRzIwGt/uw==
+  dependencies:
+    "@babel/helper-create-class-features-plugin" "^7.8.0"
+    "@babel/helper-plugin-utils" "^7.8.0"
+    "@babel/plugin-syntax-decorators" "^7.8.0"
+
 "@babel/plugin-proposal-dynamic-import@^7.7.4":
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-dynamic-import/-/plugin-proposal-dynamic-import-7.7.4.tgz#dde64a7f127691758cbfed6cf70de0fa5879d52d"
@@ -472,7 +481,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/plugin-syntax-decorators@^7.7.4":
+"@babel/plugin-syntax-decorators@^7.7.4", "@babel/plugin-syntax-decorators@^7.8.0":
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-decorators/-/plugin-syntax-decorators-7.8.0.tgz#4a2930ef597c5bc5c5ae9a97d7883d03eeb48eb2"
   integrity sha512-Qz68qh9jJqQePGWqbNW9PA7vkE2gvnWkYtx32jgPOszpE7u+xObPkRGm3B80oXAjQlBdTa4ktqjkOIRiKRuapw==
