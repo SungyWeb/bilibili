@@ -1,28 +1,30 @@
 import React, { Component } from 'react'
-import { Button } from 'antd'
+import { adminRouter } from './routes'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
-const tsc = (WarppedComponent: typeof Component) => {
-  return class HOCComponent extends Component {
-    render() {
-      return (
-        (
-          <>
-            <WarppedComponent></WarppedComponent>
-            <h3>测试装饰器</h3>
-          </>
-        )
-      )
-    }
-  }
-}
-
-@tsc
 export default class App extends Component {
   render() {
     return (
       <div>
-        App
-        <Button type="primary">ok</Button>
+        <h1>公共部分</h1>
+        <Switch>
+          {
+            adminRouter.map(item => {
+              return (
+                <Route
+                  key={item.pathname}
+                  path={item.pathname}
+                  exact={item.exact || false}
+                  render={routeProps => {
+                    return <item.component {...routeProps} />
+                  }
+                }/>
+              )
+            })
+          }
+          <Redirect to="/admin/dashboard" from="/admin" exact />
+          <Redirect to="/404" />
+        </Switch>
       </div>
     )
   }
