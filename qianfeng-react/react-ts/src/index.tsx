@@ -11,7 +11,7 @@ render(
     <Switch>
       <Route path="/admin" render={routerProps => {
         // todo: 权限认证
-        return <App />
+        return <App {...routerProps}/>
       }}></Route>
       {
         mainRouter.map(item => {

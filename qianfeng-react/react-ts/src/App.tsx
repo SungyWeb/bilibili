@@ -10,14 +10,14 @@ export default class App extends Component {
         <Switch>
           {
             adminRouter.map(item => {
-              console.log(item.component instanceof React.Component)
               return (
                 <Route
                   key={item.pathname}
                   path={item.pathname}
                   exact={item.exact || false}
                   render={routeProps => {
-                    return <item.component {...routeProps} />
+                    console.log(routeProps)
+                    return <item.component {...routeProps}/>
                   }
                 }/>
               )

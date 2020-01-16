@@ -6,10 +6,11 @@ import {
   Login,
   Settings
 } from '../views'
+import { RouteProps } from 'react-router-dom'
 
 type Routes = {
   pathname: string,
-  component: React.ReactNode,
+  component: React.ComponentType<RouteProps>,
   exact?: boolean,
 }[]
 
