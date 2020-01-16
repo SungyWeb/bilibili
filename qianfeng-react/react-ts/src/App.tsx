@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import { adminRoutes } from './routes'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { Layout } from './components'
+
+const menus = adminRoutes.filter(route => route.isNav)
+
 export default class App extends Component {
   render() {
     return (
-      <Layout>
+      <Layout menus={menus}>
         <div>
           <h1>公共部分</h1>
           <Switch>
@@ -17,7 +20,6 @@ export default class App extends Component {
                     path={item.pathname}
                     exact={item.exact || false}
                     render={routeProps => {
-                      console.log(routeProps)
                       return <item.component {...routeProps} />
                     }
                     } />
