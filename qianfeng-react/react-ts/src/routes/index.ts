@@ -6,11 +6,10 @@ import {
   Login,
   Settings
 } from '../views'
-import React from 'react'
 
 type Routes = {
   pathname: string,
-  component: typeof React.Component,
+  component: React.ReactNode,
   exact?: boolean,
 }[]
 
@@ -25,7 +24,7 @@ export const mainRouter: Routes = [
   }
 ]
 
-export const adminRouter = [
+export const adminRouter: Routes = [
   {
     pathname: '/admin/dashboard',
     component: Dashboard

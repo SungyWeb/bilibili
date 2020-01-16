@@ -10,6 +10,7 @@ export default class App extends Component {
         <Switch>
           {
             adminRouter.map(item => {
+              console.log(item.component instanceof React.Component)
               return (
                 <Route
                   key={item.pathname}
