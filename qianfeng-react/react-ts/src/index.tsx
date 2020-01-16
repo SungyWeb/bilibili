@@ -4,7 +4,7 @@ import App from './App'
 import './index.less'
 
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
-import { mainRouter } from './routes'
+import { mainRoutes } from './routes'
 
 render(
   <Router>
@@ -14,7 +14,7 @@ render(
         return <App {...routerProps}/>
       }}></Route>
       {
-        mainRouter.map(item => {
+        mainRoutes.map(item => {
           return (
             <Route key={item.pathname} path={item.pathname} component={item.component}></Route>
           )
