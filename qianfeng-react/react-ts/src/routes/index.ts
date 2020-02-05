@@ -16,6 +16,7 @@ type mainRouteType = {
 export type Routes = {
   pathname: string,
   component: React.ComponentType<RouteProps>,
+  // component: React.ComponentType<RouteProps>,
   exact?: boolean,
   title?: string,
   isNav?: boolean,
@@ -42,7 +43,6 @@ export const adminRoutes: Routes = [
     title: '仪表盘',
     isNav: true,
     icon: 'dashboard',
-    defaultShow: true,
   },
   {
     pathname: '/admin/article',
@@ -50,7 +50,7 @@ export const adminRoutes: Routes = [
     title: '文章管理',
     isNav: true,
     exact: true,
-    icon: 'unordered-list'
+    icon: 'unordered-list',
   },
   {
     pathname: '/admin/article/edit/:id',

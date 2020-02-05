@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layout as Lay, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout as Lay, Menu, Icon } from 'antd';
 import Logo from './logo.png'
 import './index.less'
 import { Routes } from '../../routes'
@@ -21,11 +21,9 @@ class Layout extends Component<IProps> {
     this.props.history.push(key)
   }
   render() {
-    const menus = this.props.menus;
-    const defaultMenu = menus.find(v => v.defaultShow)
-    return (
-      <div>
-        <Lay>
+    const p = this.props.location.pathname
+    return (      
+        <Lay style={{minHeight: '100%'}}>
           <Header className="header app-header">
             <div className="logo">
               <img src={Logo} alt="logo" />
@@ -45,7 +43,7 @@ class Layout extends Component<IProps> {
             <Sider width={200} style={{ background: '#fff' }}>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={[defaultMenu?.pathname! || '']}
+                selectedKeys={[p]}
                 style={{ height: '100%', borderRight: 0 }}
                 onClick={this.menuClick}
               >
@@ -62,15 +60,10 @@ class Layout extends Component<IProps> {
               </Menu>
             </Sider>
             <Lay style={{ padding: '0 24px 24px' }}>
-              <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item>List</Breadcrumb.Item>
-                <Breadcrumb.Item>App</Breadcrumb.Item>
-              </Breadcrumb>
               <Content
                 style={{
                   background: '#fff',
-                  padding: 24,
+                  padding: 16,
                   margin: 0,
                   minHeight: 280,
                 }}
@@ -79,8 +72,7 @@ class Layout extends Component<IProps> {
               </Content>
             </Lay>
           </Lay>
-        </Lay>,
-      </div>
+        </Lay>
     )
   }
 }
