@@ -10,7 +10,6 @@ export default class App extends Component {
     return (
       <Layout menus={menus}>
         <div>
-          <h1>公共部分</h1>
           <Switch>
             {
               adminRoutes.map(item => {

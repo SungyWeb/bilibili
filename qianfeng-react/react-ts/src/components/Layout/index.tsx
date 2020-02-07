@@ -64,7 +64,6 @@ class Layout extends Component<IProps> {
                 style={{
                   background: '#fff',
                   padding: 16,
-                  margin: 0,
                   minHeight: 280,
                 }}
               >
