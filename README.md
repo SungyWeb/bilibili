@@ -1,6 +1,15 @@
-# bilibili
+# umi project
 
-用于学习bilibili上的教程
+## Getting Started
 
-test
+Install dependencies,
 
+```bash
+$ yarn
+```
+
+Start the dev server,
+
+```bash
+$ yarn start
+```
