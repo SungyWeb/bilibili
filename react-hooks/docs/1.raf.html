@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="progess" style="width: 0; background-color: lightblue; height: 20px;"></div>
+  <button id="btn">开始</button>
+  <script>
+    const oDiv = document.getElementById('progess')
+    const btn = document.getElementById('btn')
+    let start = null
+    function run (timestamp) {
+      oDiv.style.width = oDiv.offsetWidth + 1 + 'px'
+      oDiv.innerHTML = oDiv.offsetWidth + 'px'
+      
+      if(oDiv.offsetWidth < 100) {
+        const cur = Date.now()
+        console.log(cur - start)
+        start = cur
+        window.requestAnimationFrame(run)
+      }
+    }
+    btn.addEventListener('click', () => {
+      oDiv.style.width = 0
+      start = Date.now()
+      window.requestAnimationFrame(run)
+    })
+  </script>
+</body>
+</html>
