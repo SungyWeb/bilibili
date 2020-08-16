@@ -99,7 +99,7 @@ Promise 也不建议在这里面进行，因为 Promise 的回调属性 Event lo
 
 [demo](./2.requestIdleCallback.html)
 
-### 1.2.3 单链表
+## 1.3 单链表
 
 + 单链表是一种链式存取的数据结构
 + 链表中的数据以节点来表示，每个节点由元素+指针， 元素是存储数据的存储单元，指针指向后续元素的存储位置
@@ -149,3 +149,61 @@ quene.addUpdate(new Update(state => ({number: state.number+1})))
 quene.addUpdate(new Update(state => ({number: state.number+1})))
 const state = quene.forceUpdate()   // state = { name: 'a', number: 3 }
 ```
+
+## 1.4 Fiber历史
+
+### 1.4.1 Fiber出现之前的协调
+
++ React会递归对比VirtualDOM树，找出需要变动的节点，并更新它们，这个过程React称之为Reconciliation(协调)
++ 在Reconciliation期间，React会一直占用浏览器资源，一则会导致用户触发的事件得不到响应，二则会导致掉贞，用户可能会感觉到卡顿
+
+```js
+// 以前的方式
+const root = [
+  {
+    name: 'A',
+    children: [
+      {
+        name: 'B1',
+        children: [
+          {
+            name: 'C1',
+            children: [],
+          },
+          {
+            name: 'C2',
+            children: [],
+          }
+        ],
+      },
+      {
+        name: 'B2',
+        children: []
+      }
+    ]
+  }
+]
+function walk(vdom) {
+  // 深度优先遍历
+  dowork(vdom)
+  vdom.children.forEach(v => {
+    walk(v)
+  })
+}
+function dowork(vdom) {
+  console.log(vdom.name)
+}
+walk(root)
+```
+
+这种递归遍历，调用栈会越来越深，而且无法中断，一旦中断，需要重新遍历
+
+### 1.4.2 Fiber是什么
+
++ 我们可以通过某些调度策略来合理分配cpu资源，从而提高用户响应速度
++ 通过Fiber架构， 让自己的reconciliation过程变得可中断，适时的让出cpu执行权，以便浏览器及时响应用户的交互
+
+https://www.bilibili.com/video/BV16V411672B?p=3 13:11
+
+
+
