@@ -202,8 +202,81 @@ walk(root)
 
 + 我们可以通过某些调度策略来合理分配cpu资源，从而提高用户响应速度
 + 通过Fiber架构， 让自己的reconciliation过程变得可中断，适时的让出cpu执行权，以便浏览器及时响应用户的交互
++ Fiber是一个执行单元，react每次执行完一个执行单元，都会检查还有多少剩余时间，如果没有剩余时间就将控制权还给浏览器
++ React目前做法是使用链表，每个VirtualDOM节点内部表示为一个Fiber
 
-https://www.bilibili.com/video/BV16V411672B?p=3 13:11
+## 1.5 Fiber执行阶段
+
++ 每次渲染有两个阶段：Reconciliation（协调或者render阶段）和Commit（提交）
++ 协调阶段： 可以认为是diff阶段，可以被中断，这个阶段会找出所有节点变更，如节点的新增、删除、属性变更等，这些变更React称之为副作用（Effect）
++ 提交阶段： 将协调阶段计算出来需要处理的副作用一次性执行。这个阶段必须同步，不能被中断
+
+### 1.5.1 render阶段
+
+render阶段会构建Fiber树，生成以下类似结构：
+
+![alt Fiber](./docs/images/fiber.png)
+
+```js
+let A1 = { type: 'div', key:'A1' }
+let B1 = { type: 'div', key:'B1', return: A1 }
+let B2 = { type: 'div', key:'B2', return: A1 }
+let C1 = { type: 'div', key:'C1', return: B1 }
+let C2 = { type: 'div', key:'C2', return: B1 }
+A1.child = B1
+B1.sibling = B2
+B1.child = C1
+C1.sibling = C2
+```
+
+### 1.5.2 Fiber遍历
+
+  + 从顶点开始遍历
+  + 如果有第一个儿子，先遍历第一个儿子
+  + 如果没有第一个儿子，标志次节点遍历完成
+  + 然后如果有弟弟，就遍历弟弟
+  + 如果没有弟弟就，则返回父节点，并标志父节点遍历完成
+  + 如果有叔叔节点，就遍历叔叔节点，如果没有则再次返回父节点，并标志完成
+  + 如果没有父节点，则遍历结束
+
+总结：先儿子 后弟弟 再叔叔  所有子节点完成后，该节点完成
 
 
+```js
+let nextUnitOfWork = A1   // 下一个执行单元,开始的时候 为A1
+function workLoop () {
+    while(nextUnitOfWork) {
+        nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
+    }
+}
 
+function performUnitOfWork(fiber) {
+    beginWork(fiber)   // 处理执行单元
+    if(fiber.child) {
+        // 如果有儿子，则返回儿子
+        return fiber.child
+    }
+    // 执行到这里 说明没有儿子
+    while(fiber) {
+        // 没有儿子的节点 说明该节点遍历结束
+        completeWork(fiber)
+        if(fiber.sibling) {
+            // 如果有弟弟，则返回弟弟
+            return fiber.sibling
+        }else {
+            // 没有弟弟 则将当前节点设置为父节点
+            fiber = fiber.return
+        }
+    }
+}
+function completeWork(fiber) {
+    console.log('结束工作： '+fiber.key)
+}
+function beginWork(fiber) {
+    console.log('开始工作： '+fiber.key)
+    
+}
+workLoop()
+```
+
+[demo ./docs/4.fiber.js](./docs/4.fiber.js)
