@@ -11,10 +11,17 @@ B1.child = C1
 C1.sibling = C2
 
 let nextUnitOfWork = A1   // 下一个执行单元,开始的时候 为A1
-function workLoop () {
-    while(nextUnitOfWork) {
+function workLoop (deadline) {
+    while((deadline.timeRemaining() > 0 || deadline.didTimeout) && nextUnitOfWork) {
         nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
     }
+    // 执行到这里说明没有时间了
+    if(nextUnitOfWork) {
+        window.requestIdleCallback(workLoop, {timeout: 1000})
+    }else {
+      console.log('render阶段执行完毕')
+    }
+
 }
 
 function performUnitOfWork(fiber) {
@@ -43,4 +50,4 @@ function beginWork(fiber) {
     console.log('开始工作： '+fiber.key)
     
 }
-workLoop()
+window.requestIdleCallback(workLoop, {timeout: 1000})

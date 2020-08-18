@@ -243,10 +243,17 @@ C1.sibling = C2
 
 
 ```js
+
 let nextUnitOfWork = A1   // 下一个执行单元,开始的时候 为A1
-function workLoop () {
-    while(nextUnitOfWork) {
+function workLoop (deadline) {
+    while((deadline.timeRemaining() > 0 || deadline.didTimeout) && nextUnitOfWork) {
         nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
+    }
+    // 执行到这里说明没有时间了
+    if(nextUnitOfWork) {
+        window.requestIdleCallback(workLoop, {timeout: 1000})
+    }else {
+      console.log('render阶段执行完毕')
     }
 }
 
@@ -276,7 +283,11 @@ function beginWork(fiber) {
     console.log('开始工作： '+fiber.key)
     
 }
-workLoop()
+window.requestIdleCallback(workLoop, {timeout: 1000})
 ```
 
-[demo ./docs/4.fiber.js](./docs/4.fiber.js)
+[demo ./docs/4.fiber.js](./docs/4.fiber.js)  **需要在浏览器环境下执行**
+
+之所以说Fiber可以中断，是因为nextUnitOfWork记录了执行的节点
+
+vue不需要fiber，因为它与react的优化策略不一样，vue的更新是基于模板和watch的组件级更新，更新范围小，只需要更新对应的组件即可；而react无论哪个组件setState，都会从根节点开始进行diff计算、更新，这样导致react的任务量还是很大，但是react将它分割成多个小任务，可以中断和恢复，不阻塞主进程执行高优先级任务
