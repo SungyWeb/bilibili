@@ -291,3 +291,29 @@ window.requestIdleCallback(workLoop, {timeout: 1000})
 之所以说Fiber可以中断，是因为nextUnitOfWork记录了执行的节点
 
 vue不需要fiber，因为它与react的优化策略不一样，vue的更新是基于模板和watch的组件级更新，更新范围小，只需要更新对应的组件即可；而react无论哪个组件setState，都会从根节点开始进行diff计算、更新，这样导致react的任务量还是很大，但是react将它分割成多个小任务，可以中断和恢复，不阻塞主进程执行高优先级任务
+
+# 2 手写react
+
+# 2.1 createElements
+
+```js
+// jsx 会被babel转换成下面对象格式，
+// 每一个节点都是react元素 即虚拟dom
+// 整个对象构成了虚拟dom树
+{
+  type: 'div',
+  props: {
+    // 一些属性
+    children: [
+      {
+        type:'div',
+        props:{ }
+      }
+    ]
+  }
+}
+```
+
+p5
+
+
