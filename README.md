@@ -1,7 +1,7 @@
 # umi project
 
 ## Getting Started
-asdfsd
+as
 Install dependencies,
 
 ```bash
