@@ -1,10 +1,10 @@
 const BaseService = require('./base')
-const TableName = 'user'
-class UserService extends BaseService {
+const TableName = 'resource'
+class ResourceService extends BaseService {
     constructor(...args) {
         super(...args)
         this.entity = TableName
     }
 }
 
-module.exports = UserService
+module.exports = ResourceService
