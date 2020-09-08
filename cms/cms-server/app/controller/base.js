@@ -5,11 +5,11 @@ const { Controller } = require('egg')
  * 由子类具体实现
  */
 class BaaseController extends Controller {
-    success(data = {}) {
+    success(message = 'success') {
         this.ctx.body = {
             code: 0,
-            message: 'success',
-            data,
+            message,
+            data: {},
         }
     }
     error(message = 'error') {
@@ -26,13 +26,13 @@ class BaaseController extends Controller {
             isNaN(pageNum) ? 1 : parseInt(pageNum),
             where
         )
-        this.success(list)
+        ctx.body = result
     }
     async create() {
         const { ctx, service } = this
         const entity = ctx.request.body
         const isSuccess = await service[this.entity].create(entity)
-        isSuccess ? this.success() : this.error('创建失败')
+        isSuccess ? this.success('创建成功') : this.error('创建失败')
     }
     async update() {
         const { ctx, service } = this
@@ -40,13 +40,13 @@ class BaaseController extends Controller {
         const id = ctx.params.id
         entity.id = id
         const isSuccess = await service[this.entity].update(entity)
-        isSuccess ? this.success() : this.error('更新失败')
+        isSuccess ? this.success('更新成功') : this.error('更新失败')
     }
     async destroy() {
         const { ctx, service } = this
         const id = ctx.params.id
         const isSuccess = await service[this.entity].destroy(id)
-        isSuccess ? this.success() : this.error('删除失败')
+        isSuccess ? this.success('删除成功') : this.error('删除失败')
     }
 }
 

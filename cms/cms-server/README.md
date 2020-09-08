@@ -1,3 +1,4 @@
 # mysql
 
-1. 用户名 root 密码 123456  windows电脑
+1. windows root  123456  
+2. mac root 123@mysql.com
