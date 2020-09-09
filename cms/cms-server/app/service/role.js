@@ -45,13 +45,21 @@ class RoleService extends BaseService {
   async setUser({ roleId, userIds }) {
     const { app } = this
     // 先全部删除 再从新写入
-    await app.mysql.query(`DELETE FROM role_user WHERE role_id=?`, [roleId])
-    for (let i = 0; i < userIds.length; i++) {
-      const userId = userIds[i]
-      await app.mysql.insert('role_user', {
-        role_id: roleId,
-        user_id: userId
-      })
+
+    const connect = await app.mysql.beginTransaction()
+    try {
+      await connect.query(`DELETE FROM role_user WHERE role_id=?`, [roleId])
+      for (let i = 0; i < userIds.length; i++) {
+        const userId = userIds[i]
+        await connect.insert('role_user', {
+          role_id: roleId,
+          user_id: userId
+        })
+      }
+      await connect.commit()
+    } catch (err) {
+      await connect.rollback()
+      throw err
     }
   }
 }
