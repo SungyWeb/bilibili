@@ -1,9 +1,26 @@
 {
   "extends": "eslint-config-egg",
   "rules": {
-    "semi": 0
-  },
-  "globals": {
-    "app": true
+    "semi": 0,
+    "indent": [
+      1,
+      2
+    ],
+    "strict": "off",
+    "space-before-blocks": [
+      1,
+      2
+    ],
+    "arrow-spacing": [
+      2,
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "block-spacing": [
+      2,
+      "always"
+    ]
   }
 }

@@ -7,4 +7,5 @@ class RoleUserService extends BaseService {
     }
 }
 
+
 module.exports = RoleUserService
