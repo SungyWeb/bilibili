@@ -35,6 +35,7 @@ module.exports = appInfo => {
       csrf: {
         enable: false,
       },
+      whiteList: ['http://localhost:3000']
     },
   }
 
