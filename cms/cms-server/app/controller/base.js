@@ -5,16 +5,16 @@ const { Controller } = require('egg')
  * 由子类具体实现
  */
 class BaaseController extends Controller {
-    success(message = 'success') {
+    success(data = {}) {
         this.ctx.body = {
-            code: 0,
-            message,
-            data: {},
+            code: 1,
+            message: 'success',
+            data,
         }
     }
     error(message = 'error') {
         this.ctx.body = {
-            code: 1,
+            code: 0,
             message,
         }
     }
