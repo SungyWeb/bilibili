@@ -294,6 +294,8 @@ vue不需要fiber，因为它与react的优化策略不一样，vue的更新是�
 
 # 2 手写react
 
+jsx会通过babel编译成 React.createElement(type, props, ...children), 它会返回一个虚拟dom的描述对象
+
 # 2.1 createElements
 
 ```js
