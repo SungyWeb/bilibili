@@ -21,7 +21,12 @@ export function scheduleRoot(rootFiber) {
  * @param {*} currentFiber 
  */
 function completeUnitOfWork(currentFiber) {
+  if (currentFiber.props.id === 'B1') {
+    // debugger
+    console.log('B1')
+  }
   const returnFiber = currentFiber.return
+  // debugger
   if (returnFiber) {
     if (!returnFiber.firstEffect) {
       returnFiber.firstEffect = currentFiber.firstEffect
@@ -152,6 +157,7 @@ function beginWork(currentFiber) {
 }
 
 function performUnitOfWork(currentFiber) {
+  console.log(workInProgressRoot)
   beginWork(currentFiber)   // 开始工作
   if (currentFiber.child) {
     return currentFiber.child
