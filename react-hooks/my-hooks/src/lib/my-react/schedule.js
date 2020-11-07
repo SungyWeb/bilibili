@@ -29,15 +29,15 @@ function completeUnitOfWork(currentFiber) {
     if (currentFiber.lastEffect) {
       if (returnFiber.lastEffect) {
         returnFiber.lastEffect.nextEffect = currentFiber.firstEffect
-      } else {
-        returnFiber.lastEffect = currentFiber.lastEffect
       }
+      returnFiber.lastEffect = currentFiber.lastEffect
     }
     const effectTag = currentFiber.effectTag
     if (effectTag) {
       if (!!returnFiber.lastEffect) {
-        returnFiber.lastEffect.sibling = currentFiber
-      } else { // todo
+        returnFiber.lastEffect.nextEffect = currentFiber
+      }
+      if (!returnFiber.firstEffect) {
         returnFiber.firstEffect = currentFiber
       }
       returnFiber.lastEffect = currentFiber
@@ -140,7 +140,7 @@ function commitWook(currentFiber) {
   if (currentFiber.effectTag === PLACEMENT) {
     returnDOM.appendChild(currentFiber.stateNode)
   }
-  returnFiber.effectTag = null
+  currentFiber.effectTag = null
 }
 requestIdleCallback(wookLoop, { timeout: 500 })
 export { scheduleRoot }
