@@ -1,13 +1,4 @@
-export function setProps(dom, oldProps, newProps) {
-  // for (let key in oldProps) {
 
-  // }
-  for (let key in newProps) {
-    if (key !== 'children') {
-      setProp(dom, key, newProps[key])
-    }
-  }
-}
 function setProp(dom, key, value) {
   if (/^on/.test(key)) {
     dom[key.toLowerCase()] = value
@@ -19,5 +10,15 @@ function setProp(dom, key, value) {
     }
   } else {
     dom.setAttribute(key, value)
+  }
+}
+export function setProps(dom, oldProps, newProps) {
+  for (let key in oldProps) {
+
+  }
+  for (let key in newProps) {
+    if (key !== 'children') {
+      setProp(dom, key, newProps[key])
+    }
   }
 }

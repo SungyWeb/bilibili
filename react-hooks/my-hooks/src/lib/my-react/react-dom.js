@@ -1,34 +1,15 @@
-import { TAG_ROOT, } from './constants'
+import { TAG_ROOT, TAG_HOST, TAG_TEXT } from './enums'
 import { scheduleRoot } from './schedule'
-/*
-  type Fiber = {
-    tag,  // 元素的类型
-    stateNode, // element为原生节点，stateNode指向真实dom元素
-    props: {
-      children: [],   // 该节点将要渲染的React元素（即虚拟dom，不是fiber）
-    }
-  }
-*/
-
-/**
- * 将一个节点渲染到容器内
- * @param {jsx} element 节点
- * @param {} container 容器
- */
 function render(element, container) {
-  // 每个节点都会创建一个fiber
   const rootFiber = {
     tag: TAG_ROOT,
-    stateNode: container,
+    stateNode: container,     // 如果是原生节点， stateNode 指向真实dom元素
     props: {
-      children: [element],
+      children: [element],  // children 中存放vdom
     }
   }
   scheduleRoot(rootFiber)
 }
-
-const ReactDom = {
+export default {
   render,
 }
-
-export default ReactDom
