@@ -2,23 +2,26 @@
 // import ReactDOM from 'react-dom'
 import React from './lib/my-react'
 import ReactDOM from './lib/my-react/react-dom'
-const style = {
-  border: '1px solid red',
-  margin: '5px',
+
+class Counter extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      count: 0
+    }
+    this.clickHandle.bind(this)
+  }
+  clickHandle() {
+    console.log(1)
+  }
+  render() {
+    return (
+      <div>
+        <h3>{ this.state.count }</h3>
+        <div>
+          <button onClick={ this.clickHandle }>click</button>
+        </div>
+      </div>
+    )
+  }
 }
-let element = (
-  <div id="A1" style={ style }>
-    A1
-    <div id="B1" style={ style }>
-      B1
-      <div id="C1" style={ style }>c1</div>
-      <div id="C2" style={ style }>c2</div>
-    </div>
-    <div id="B2" style={ style }>B2</div>
-  </div>
-)
-console.log(element)
-ReactDOM.render(
-  element,
-  document.getElementById('root')
-)

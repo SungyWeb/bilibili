@@ -1,10 +1,22 @@
-import { PLACEMENT, ELEMENT_TEXT, TAG_HOST, TAG_ROOT, TAG_TEXT } from "./enums"
+import { PLACEMENT, ELEMENT_TEXT, TAG_HOST, TAG_ROOT, TAG_TEXT, DELETION, UPDATE, TAG_Class } from "./enums"
 import { setProps } from './units'
-
+import { UpdateQueue } from './update-quene'
 let nextUnitOfWrok = null
 let workInProgressRoot = null   // 根fiber
+let currentRoot = null   // 更新的根fiber
+let deletions = []
 function scheduleRoot(rootFiber) {
-  nextUnitOfWrok = rootFiber
+  if (currentRoot && currentRoot.alternate) {
+    workInProgressRoot = currentRoot.alternate
+    workInProgressRoot.props = rootFiber.props
+    workInProgressRoot.alternate = currentRoot
+  } else if (currentRoot) {
+    rootFiber.alternate = currentRoot
+    workInProgressRoot = rootFiber
+  } else {
+    workInProgressRoot = rootFiber
+  }
+  workInProgressRoot.firstEffect = workInProgressRoot.lastEffect = workInProgressRoot.nextEffect = null
   workInProgressRoot = rootFiber
 }
 function performUnitOfWork(currentFiber) {
@@ -58,7 +70,20 @@ function beginWork(currentFiber) {
     updateHostText(currentFiber)
   } else if (currentFiber.tag === TAG_HOST) {
     updateHost(currentFiber)
+  } else if (currentFiber.tag === TAG_Class) {
+    updateClassComponent(currentFiber)
   }
+}
+function updateClassComponent(currentFiber) {
+  if (!currentFiber.stateNode) {
+    currentFiber.stateNode = new currentFiber.type(currentFiber.props)
+    currentFiber.stateNode.internalFiber = currentFiber
+    currentFiber.updateQueue = new UpdateQueue()
+  }
+  currentFiber.stateNode.state = currentFiber.updateQueue.forceUpdate(currentFiber.stateNode.state)
+  let newElement = currentFiber.stateNode.render()
+  const newChild = [newElement]
+  reconcileChildren(currentFiber, newChild)
 }
 function updateDom(stateNode, oldProps, newProps) {
   setProps(stateNode, oldProps, newProps)
@@ -84,27 +109,58 @@ function updateHostRoot(currentFiber) {
 function reconcileChildren(currentFiber, children) {
   let childIndex = 0
   let prevSibling
-  while (childIndex < children.length) {
+  let oldFiber = currentFiber.alternate && currentFiber.alternate.child
+  while (childIndex < children.length || oldFiber) {
     const child = children[childIndex]
+    let fiber
+    const sameType = oldFiber && child && oldFiber.type === child.type
     let tag
-    if (child.type === ELEMENT_TEXT) {
-      tag = TAG_TEXT  // 本文节点
-    } else if (typeof child.type === 'string') {
-      tag = TAG_HOST  // 原生dom节点
+    if (child) {
+
+      if (child.type === ELEMENT_TEXT) {
+        tag = TAG_TEXT  // 本文节点
+      } else if (typeof child.type === 'string') {
+        tag = TAG_HOST  // 原生dom节点
+      } else if (typeof child.type === 'function' && child.type.prototype.isReactComponent) {
+        tag = TAG_Class
+      }
     }
-    let fiber = {
-      tag,
-      type: child.type,
-      props: child.props,
-      stateNode: null,
-      return: currentFiber,
-      effectTag: PLACEMENT, // 副作用标识
-      nextEffect: null,
+    if (sameType) {
+      if (oldFiber.alternate) {
+        fiber = {
+          tag: oldFiber.tag,
+          type: oldFiber.type,
+          props: child.props,
+          stateNode: oldFiber.stateNode,
+          return: currentFiber,
+          alternate: oldFiber,
+          effectTag: UPDATE, // 副作用标识
+          nextEffect: null,
+        }
+      }
+    } else {
+      if (child) {
+        fiber = {
+          tag,
+          type: child.type,
+          props: child.props,
+          stateNode: null,
+          return: currentFiber,
+          effectTag: PLACEMENT, // 副作用标识
+          nextEffect: null,
+        }
+      }
+      if (oldFiber) {
+        oldFiber.effectTag = DELETION
+        deletions.push(oldFiber)
+      }
+    }
+    if (oldFiber) {
+      oldFiber = oldFiber.sibling
     }
     if (fiber) {
       if (childIndex === 0) {
         currentFiber.child = fiber
-
       } else {
         prevSibling.sibling = fiber
       }
@@ -126,19 +182,32 @@ function wookLoop(deadline) {
   requestIdleCallback(wookLoop, { timeout: 500 })
 }
 function commitRoot() {
+  deletions.forEach(commitWork)
   let currentFiber = workInProgressRoot.firstEffect
   while (currentFiber) {
-    commitWook(currentFiber)
+    commitWork(currentFiber)
     currentFiber = currentFiber.nextEffect
   }
+  deletions.length = 0
+  currentRoot = workInProgressRoot
   workInProgressRoot = null
 }
-function commitWook(currentFiber) {
+function commitWork(currentFiber) {
   if (!currentFiber) return
   let returnFiber = currentFiber.return
   let returnDOM = returnFiber.stateNode
   if (currentFiber.effectTag === PLACEMENT) {
     returnDOM.appendChild(currentFiber.stateNode)
+  } else if (currentFiber.effectTag === DELETION) {
+    returnDOM.removeChild(currentFiber.stateNode)
+  } else if (currentFiber.effectTag === UPDATE) {
+    if (currentFiber.type === ELEMENT_TEXT) {
+      if (currentFiber.alternate.props.text !== currentFiber.props.text) {
+        currentFiber.stateNode.textContent = currentFiber.props.text
+      }
+    } else {
+      updateDom(currentFiber.stateNode, currentFiber.alternate.props, currentFiber.props)
+    }
   }
   currentFiber.effectTag = null
 }
