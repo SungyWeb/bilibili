@@ -1,17 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import Didact from './lib/didact'
+import DidactDOM from './lib/didact-dom'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+/** @jsxRuntime classic */
+/** @jsx Didact.createElement */
+const element = (
+    <div id="foo">
+        <a href="www.baidu.com" target="_blank">a</a>
+        <br/>
+        <span>asdf</span>
+    </div>
+)
+DidactDOM.render(element, document.getElementById('root'))
