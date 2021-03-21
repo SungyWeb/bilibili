@@ -22,6 +22,7 @@ function createElement(type, props, ...children) {
         }
     }
 }
+
 const Didact = {
     createElement,
 }
