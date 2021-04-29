@@ -1,11 +1,22 @@
-import DidactDOM from './Didact/didact-dom'
-import Didact from './Didact/didact'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-/** @jsxRuntime classic */
-/** @jsx Didact.createElement */
-const App = <h3 id="h3" onClick={() => console.log('asdf')}>
-  <p>hello</p>
-  <p>world</p>
-</h3>
+class App extends React.Component {
+  state = {
+    count: 1,
+  }
+  render () {
 
-DidactDOM.render(App, document.getElementById('root'))
+    return (
+      <h3 id="h3" onClick={() => this.setState(s => ({count: s.count + 1}))}>
+        <p>hello</p>
+        <p>world</p>
+        <p>{this.state.count}</p>
+      </h3>
+    )
+  }
+}
+const ele = <App />
+console.log(ele)
+ReactDOM.render(ele, document.getElementById('root'))
+

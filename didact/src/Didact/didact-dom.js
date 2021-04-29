@@ -44,7 +44,6 @@ function updateDom(dom, prevProps, nextProps) {
       const eventType = name
         .toLowerCase()
         .substring(2)
-      console.log(eventType)
       dom.addEventListener(
         eventType,
         nextProps[name]
