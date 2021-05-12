@@ -10,6 +10,32 @@ let workInProgress = null
 let currentRoot = null
 let deletions = []
 
+/* --------------------------- */
+
+function FiberRootNode(containerInfo, tag) {
+  this.tag = tag;
+  this.containerInfo = containerInfo;
+  this.pendingChildren = null;
+  this.current = null;
+}
+
+function ReactDOMBlockingRoot(container, tag, options) {
+  this._internalRoot = new FiberRootNode(container, tag)
+
+}
+
+ReactDOMBlockingRoot.prototype.render = function (children) {
+  var root = this._internalRoot
+  updateContainer(children, root, null, null)
+}
+ReactDOMBlockingRoot.prototype.unmount = function (children) {
+  var root = this._internalRoot
+  var container = root.containerInfo
+  updateContainer(null, root, null, function() {
+    ummarkContainerAsRoot(container)
+  })
+}
+
 const isEvent = key => key.startsWith('on')
 const isProperty = key => key !== 'children' && !isEvent(key)
 const isNew = (prev, next) => key => prev[key] !== next[key]
@@ -63,6 +89,14 @@ function createDomElement(fiber) {
 }
 
 function render(element, container) {
+  var root = container._reactRootContainer
+  var fiberRoot
+  if(!root) {
+    root = container._reactRootContainer = new ReactDOMBlockingRoot(container, 0, )
+  }
+
+
+
   workInProgress = {
     dom: container,
     props: {

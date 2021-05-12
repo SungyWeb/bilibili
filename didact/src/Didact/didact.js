@@ -2,6 +2,21 @@ import {
   TEXT_ELEMENT,
 } from './enum'
 
+function Componemt (props, context, updater) {
+  this.props = props
+  this.context = context
+  this.updater = updater
+  this.refs = {}
+}
+
+Componemt.prototype.isReactComponent = {}
+Componemt.prototype.setState = function (partialState, callback) {
+  this.updater.enqueueSetState(this, partialState, callback)
+}
+Componemt.prototype.forceUpdate = function (callback) {
+  this.updater.enqueueForceUpdate(this, callback, 'forceUpdate')
+}
+
 
 function createTextElement(text) {
   return {
@@ -15,7 +30,7 @@ function createTextElement(text) {
 
 function createElement(type, props, ...children) {
 	return {
-		type, 
+		type,
 		props: {
       ...props,
       children: children.map(v => {
@@ -28,5 +43,6 @@ function createElement(type, props, ...children) {
 
 const Didact = {
 	createElement,
+  Componemt,
 }
 export default Didact
