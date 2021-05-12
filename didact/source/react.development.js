@@ -6,11 +6,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
- (function (global, factory) {
+(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = global || self, factory(global.React = {}));
-}(this, (function (exports) { 
+}(this, (function (exports) { 'use strict';
 
   // TODO: this is special because it gets imported during build.
   var ReactVersion = '17.0.2';
