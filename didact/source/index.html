@@ -7,10 +7,10 @@
   <title>Document</title>
 </head>
 <body>
-  <script src="https://cdn.bootcdn.net/ajax/libs/babel-core/6.1.9/browser.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="./react.js"></script>
   <script src="./react-dom.js"></script>
-  <script>
+  <script type="text/babel">
     window.onload = function () {
       class App extends React.Component {
         render() {
