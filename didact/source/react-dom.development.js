@@ -10,7 +10,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react')) :
   typeof define === 'function' && define.amd ? define(['exports', 'react'], factory) :
   (global = global || self, factory(global.ReactDOM = {}, global.React));
-}(this, (function (exports, React) { 
+}(this, (function (exports, React) {
 
   var ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 
@@ -22732,6 +22732,7 @@
 
 
   function workLoopSync() {
+    console.log('workLoopSync')
     // Already timed out, so perform work without checking if we need to yield.
     while (workInProgress !== null) {
       performUnitOfWork(workInProgress);
@@ -22794,6 +22795,7 @@
   }
 
   function performUnitOfWork(unitOfWork) {
+    console.log('performUnitOfWork')
     // The current, flushed, state of this fiber is the alternate. Ideally
     // nothing should rely on this, but relying on it here means that we don't
     // need an additional field on the work in progress.

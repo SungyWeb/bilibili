@@ -4,6 +4,7 @@ import {beginWork as originalBeginWork} from './ReactFiberBeginWork';
 
 let currentEventTime = NoTimestamp
 let workInProgressRoot = null
+let workInProgress = null
 
 export function requestEventTime() {
   currentEventTime = unstable_now()
@@ -16,18 +17,23 @@ export function unbatchedUpdates (fn, a) {
 
 export function scheduleUpdateOnFiber(fiber, lane, eventTime) {
   const root = fiber.stateNode
-
   performSyncWorkOnRoot(root)
 }
 
+function prepareFreshStack(root, lanes) {
+  workInProgressRoot = root
+  workInProgress = createWorkInProgress(root.current, null);
+}
 function performSyncWorkOnRoot (root) {
   renderRootSync(root, null)
 }
 
-function renderRootSync(root, lane) {
-  do{
-    workLoopSync()
-  }while(true)
+function renderRootSync(root, lanes) {
+  if(workInProgressRoot !== root) {
+    prepareFreshStack(root, lanes)
+    startWorkOnPendingInteractions(root, lanes)
+  }
+  workLoopSync()
 
   workInProgressRoot = null
 }
@@ -44,6 +50,7 @@ function workLoopSync() {
 }
 
 function performUnitOfWork(unitOfWork) {
+  console.log(performUnitOfWork)
   const current = unitOfWork.alternate
   let next = beginWork(current, unitOfWork, null)
   if(next === null) {
@@ -51,4 +58,9 @@ function performUnitOfWork(unitOfWork) {
   }else {
     workInProgressRoot = next
   }
+}
+
+function completeUnitOfWork(unitOfWork) {
+  console.count('complete')
+  workInProgressRoot = null
 }

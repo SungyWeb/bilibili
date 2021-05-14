@@ -3,6 +3,6 @@ import {
 } from './DidactDOMLegacy'
 
 
-export {
+export default {
   render,
 }

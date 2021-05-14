@@ -34,7 +34,7 @@ export function enqueueUpdate(fiber, update) {
   }
   const sharedQueue = updateQueue.shared
   const pending = sharedQueue.pending
-  if(pending) {
+  if(pending === null) {
     update.next = update
   }else {
     update.next = pending.next

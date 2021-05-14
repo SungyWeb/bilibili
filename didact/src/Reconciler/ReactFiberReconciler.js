@@ -4,7 +4,7 @@ import {
 import { NoFlags } from './ReactFiberFlags'
 import { initializeUpdateQueue, createUpdate, enqueueUpdate } from './ReactUpdateQueue'
 import { unbatchedUpdates, requestEventTime } from './ReactFiberWorkLoop'
-import {scheduleUpdateOnFiber} from '../Scheduler/SchedulerPostTask'
+import {scheduleUpdateOnFiber} from './ReactFiberWorkLoop'
 
 
 function FiberRootNode(containerInfo, tag, hydrate) {
