@@ -87,11 +87,15 @@ function createDomElement(fiber) {
   fiber.dom = dom
 }
 
-function render(element, container) {
+
+// render 相关 创建 fiberRoot和fiberRootNode
+function render(element, container, callback) {
+  // fiberRootNode
   var root = container._reactRootContainer
   var fiberRoot
   if(!root) {
     root = container._reactRootContainer = new ReactDOMBlockingRoot(container, 0, )
+
   }
 
 
@@ -106,6 +110,9 @@ function render(element, container) {
   nextUnitOfWork = workInProgress
   deletions = []
 }
+
+
+
 
 function commitWork(fiber) {
   if(!fiber) return
