@@ -1,7 +1,5 @@
-function render () {
-  console.log('asdf')
-}
+import {render} from './ReactDOM'
 
-export {
+export default {
   render,
 }
