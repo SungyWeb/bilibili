@@ -1,7 +1,7 @@
 import { NoTimestamp } from './ReactFiberLane'
 import {unstable_now} from '../Scheduler/SchedulerPostTask'
 import {beginWork as originalBeginWork} from './ReactFiberBeginWork';
-
+import { createWorkInProgress } from './ReactFiber'
 let currentEventTime = NoTimestamp
 let workInProgressRoot = null
 let workInProgress = null
@@ -23,10 +23,16 @@ export function scheduleUpdateOnFiber(fiber, lane, eventTime) {
 function prepareFreshStack(root, lanes) {
   workInProgressRoot = root
   workInProgress = createWorkInProgress(root.current, null);
+  return workInProgress
+}
+
+function startWorkOnPendingInteractions(root, lanes) {
+
 }
 function performSyncWorkOnRoot (root) {
   renderRootSync(root, null)
 }
+
 
 function renderRootSync(root, lanes) {
   if(workInProgressRoot !== root) {
@@ -44,14 +50,14 @@ let beginWork = originalBeginWork
 
 
 function workLoopSync() {
-  while(workInProgressRoot !== null) {
-    performUnitOfWork(workInProgressRoot)
+  while(workInProgress !== null) {
+    performUnitOfWork(workInProgress)
   }
 }
 
 function performUnitOfWork(unitOfWork) {
-  console.log(performUnitOfWork)
   const current = unitOfWork.alternate
+  console.log(11)
   let next = beginWork(current, unitOfWork, null)
   if(next === null) {
     completeUnitOfWork(unitOfWork)

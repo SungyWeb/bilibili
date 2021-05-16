@@ -39,6 +39,58 @@ function FiberNode(tag, pendingProps, key, mode) {
   this.alternate = null;
 }
 
+export function createWorkInProgress(current, pendingProps) {
+  let workInProgress = current.alternate
+  if(workInProgress === null) {
+    workInProgress = createFiber(current.tag, pendingProps,current.key, current.mode)
+    workInProgress.elementType = current.elementType;
+    workInProgress.type = current.type;
+    workInProgress.stateNode = current.stateNode;
+
+    workInProgress.alternate = current;
+    current.alternate = workInProgress;
+  }else {
+    workInProgress.pendingProps = pendingProps;
+    // Needed because Blocks store data on type.
+    workInProgress.type = current.type;
+
+    // We already have an alternate.
+    // Reset the effect tag.
+    workInProgress.flags = NoFlags;
+
+    // The effect list is no longer valid.
+    workInProgress.nextEffect = null;
+    workInProgress.firstEffect = null;
+    workInProgress.lastEffect = null;
+
+  }
+
+  workInProgress.childLanes = current.childLanes;
+  workInProgress.lanes = current.lanes;
+
+  workInProgress.child = current.child;
+  workInProgress.memoizedProps = current.memoizedProps;
+  workInProgress.memoizedState = current.memoizedState;
+  workInProgress.updateQueue = current.updateQueue;
+
+  // Clone the dependencies object. This is mutated during the render phase, so
+  // it cannot be shared with the current fiber.
+  const currentDependencies = current.dependencies;
+  workInProgress.dependencies =
+    currentDependencies === null
+      ? null
+      : {
+          lanes: currentDependencies.lanes,
+          firstContext: currentDependencies.firstContext,
+        };
+
+  // These will be overridden during the parent's reconciliation
+  workInProgress.sibling = current.sibling;
+  workInProgress.index = current.index;
+  workInProgress.ref = current.ref;
+  return workInProgress
+}
+
 export function createFiberFromElement(element, mode, lanes) {
   const type = element.type;
   const key = element.key;

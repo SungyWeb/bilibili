@@ -42,3 +42,7 @@ export function enqueueUpdate(fiber, update) {
   }
   sharedQueue.pending = update
 }
+
+export function processUpdateQueue(workInProgress, props, instance, renderLanes) {
+
+}

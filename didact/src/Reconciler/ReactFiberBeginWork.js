@@ -72,7 +72,11 @@ export function reconcileChildren(current, workInProgress, nextChildren, renderL
 
 
 function updateHostRoot(current, workInProgress, renderLanes) {
-  const nextState = workInProgress.memoizedProps
+  const nextProps = workInProgress.memoizedProps
+  const prevState = workInProgress.memoizedState
+  const prevChildren = prevState !== null ? prevState.element : null
+  processUpdateQueue(workInProgress, props, instance, renderLanes)
+  const nextState = workInProgress
   const nextChildren = nextState.element
   reconcileChildren(current, workInProgress, nextChildren, renderLanes)
   return workInProgress.child
