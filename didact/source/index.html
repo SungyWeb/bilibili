@@ -14,10 +14,18 @@
   <script type="text/babel">
     window.onload = function () {
       class App extends React.Component {
+        state = {
+          count: 1
+        }
+        setCount() {
+          this.setState(s => ({count: s.count+1}))
+        }
         render() {
+          const {count} = this.state
           return (
             <div>
-              <h3>asdfasdf</h3>
+              <h3 onClick={this.setCount.bind(this)}>asdfasdf</h3>
+              <span style={{color: 'red'}}>count: {count}</span>
             </div>
           )
         }

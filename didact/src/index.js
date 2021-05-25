@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from './DidactDOM/DidactDOM'
+import ReactDOM from './lib/react-dom'
 // import ReactDOM from 'react-dom'
 
 class App extends React.Component {
@@ -18,7 +18,6 @@ class App extends React.Component {
   }
 }
 const ele = <App />
-console.log(ele)
 // ReactDOM.render(ele, document.getElementById('root'))
 ReactDOM.render(ele, document.getElementById('root'))
 
